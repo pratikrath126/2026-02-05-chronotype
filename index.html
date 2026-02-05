@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronoType</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Lora:ital,wght@0,400;1,700&family=Orbitron:wght@900&display=swap');
+
+        body {
+            background-color: #111;
+            color: #eee;
+            font-family: 'Roboto Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            height: 80vh;
+            border: 1px solid #333;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        #editor {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border: none;
+            color: transparent;
+            caret-color: cyan;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-family: 'Roboto Mono', monospace;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+            z-index: 1;
+            resize: none;
+        }
+
+        #display {
+            pointer-events: none;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            z-index: 0;
+        }
+
+        #editor:focus {
+            outline: none;
+        }
+
+        .char {
+            display: inline-block;
+            transition: all 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="display"></div>
+        <textarea id="editor" spellcheck="false" placeholder="Start typing..."></textarea>
+    </div>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const display = document.getElementById('display');
+        let lastCharTime = 0;
+        let typingSpeed = 0; // chars per second
+        let pauseTimeout;
+
+        editor.addEventListener('input', handleInput);
+        editor.addEventListener('keydown', () => {
+            const now = performance.now();
+            if (lastCharTime > 0) {
+                const timeDiff = now - lastCharTime;
+                typingSpeed = 1000 / timeDiff; // Instantaneous speed
+            }
+            lastCharTime = now;
+            
+            clearTimeout(pauseTimeout);
+            pauseTimeout = setTimeout(() => {
+                typingSpeed = 0; // Reset speed after a pause
+                applyStyles();
+            }, 500); // 500ms pause threshold
+        });
+
+        function handleInput() {
+            applyStyles();
+        }
+
+        function applyStyles() {
+            const text = editor.value;
+            display.innerHTML = ''; // Clear previous content
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char;
+
+                // Style based on current typing speed
+                let fontWeight = 400;
+                let fontStyle = 'normal';
+                let fontFamily = "'Roboto Mono', monospace";
+                let color = '#eee';
+                let textShadow = 'none';
+                let transform = 'none';
+
+                if (typingSpeed > 20) { // Very Fast
+                    fontFamily = "'Orbitron', sans-serif";
+                    fontWeight = 900;
+                    color = '#00ffff';
+                    textShadow = '0 0 5px #00ffff, 0 0 10px #00ffff';
+                    transform = `scale(1.1)`;
+                } else if (typingSpeed > 10) { // Fast
+                    fontWeight = 700;
+                    color = '#f0f';
+                } else if (typingSpeed > 5) { // Moderate
+                    fontWeight = 400;
+                } else { // Slow or paused
+                    fontFamily = "'Lora', serif";
+                    fontStyle = 'italic';
+                    color = '#999';
+                    transform = `skewX(-10deg)`;
+                }
+                
+                if (char === ' ') {
+                    fontFamily = "'Roboto Mono', monospace";
+                    fontStyle = 'normal';
+                }
+
+                span.style.fontWeight = fontWeight;
+                span.style.fontStyle = fontStyle;
+                span.style.fontFamily = fontFamily;
+                span.style.color = color;
+                span.style.textShadow = textShadow;
+                span.style.transform = transform;
+
+                display.appendChild(span);
+            }
+             // Auto-scroll to the bottom
+            editor.scrollTop = editor.scrollHeight;
+            display.parentElement.scrollTop = display.parentElement.scrollHeight;
+        }
+
+        // Initial placeholder message
+        function initialMessage() {
+            const placeholder = "Welcome to ChronoType.\n\nYour words shape themselves by the rhythm of your thoughts.\n\nType fast for a bold, futuristic feel.\nType slow and deliberate for an elegant, classic script.\nPauses create moments of digital decay.\n\nBegin typing to start your temporal story...";
+            editor.value = placeholder;
+            applyStyles();
+            editor.value = '';
+            editor.placeholder = 'Start typing...'
+        }
+
+        initialMessage();
+    </script>
+</body>
+</html>
