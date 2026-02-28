@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: chronotype
+    env: static
+    buildCommand: ""
+    staticPublishPath: ./

@@ -1,175 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChronoType</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Lora:ital,wght@0,400;1,700&family=Orbitron:wght@900&display=swap');
 
-        body {
-            background-color: #111;
-            color: #eee;
-            font-family: 'Roboto Mono', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b8cee",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
         }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            height: 80vh;
-            border: 1px solid #333;
-            padding: 2rem;
-            overflow-y: auto;
-            position: relative;
-            background-color: #1a1a1a;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-        }
-
-        #editor {
-            width: 100%;
-            height: 100%;
-            background: none;
-            border: none;
-            color: transparent;
-            caret-color: cyan;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            font-family: 'Roboto Mono', monospace;
-            padding: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 2rem;
-            box-sizing: border-box;
-            z-index: 1;
-            resize: none;
-        }
-
-        #display {
-            pointer-events: none;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            z-index: 0;
-        }
-
-        #editor:focus {
-            outline: none;
-        }
-
-        .char {
-            display: inline-block;
-            transition: all 0.3s ease-out;
+    </script>
+<style>
+        .fluid-type {
+            font-stretch: 150%;
+            letter-spacing: 0.1em;
+            font-style: italic;
+            transition: all 0.3s ease;
         }
     </style>
+<title>ChronoType Editor</title>
 </head>
-<body>
-    <div class="container">
-        <div id="display"></div>
-        <textarea id="editor" spellcheck="false" placeholder="Start typing..."></textarea>
-    </div>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<header class="flex items-center justify-between px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-100 text-sm font-bold tracking-widest uppercase">ChronoType</h2>
+</div>
+<div class="flex gap-4">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-slate-800/40 hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors border border-slate-700/50">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-slate-800/40 hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors border border-slate-700/50">
+<span class="material-symbols-outlined text-[20px]">ios_share</span>
+</button>
+<div class="rounded-full size-10 border border-slate-700/50 p-0.5">
+<img class="rounded-full size-full object-cover" data-alt="User profile avatar minimalist design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgtgvFW_8uUbdUZ9Vcp5hmNIRSFKNzTjC9D8hA4bGfHmBfaV6EfIv5j4QljvGPTm6tazCvfjXtM_KrSHl8dz8SlM-8hBas9iYBcU5-1h1OG2zxtQuWScQWaBwWCnBe-LCbdaW3okHSIOdKD6TCcQAIdIPPQYaTcP8Z-tAplK7idXY8DlLONPkle5YznKtSK7dydpyB09KSVQVnr91NERLAGFs5QnNHPO2TaB7Bkxys8FO3U2is15HP6Tkw6jf8RMmsXvFqTUsrg24"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 relative h-full">
+<div class="max-w-4xl w-full h-[60vh] relative">
+<div id="display" class="absolute top-0 left-0 w-full h-full pointer-events-none text-slate-100 text-[24px] md:text-[32px] font-medium leading-relaxed tracking-tight text-left break-words whitespace-pre-wrap overflow-y-auto z-0" style="font-family: 'Space Grotesk', sans-serif;"></div>
+<textarea id="editor" class="absolute top-0 left-0 w-full h-full bg-transparent border-none text-transparent caret-primary text-[24px] md:text-[32px] font-medium leading-relaxed tracking-tight resize-none focus:ring-0 text-left overflow-y-auto z-10" spellcheck="false" placeholder="Start typing..."></textarea>
+</div>
+<div class="absolute bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-8 flex flex-col gap-4">
+<div class="flex items-center justify-between text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+<span>Temporal Velocity</span>
+<span class="text-primary" id="fluidity-text">0% Fluidity</span>
+</div>
+<div class="h-[2px] w-full bg-slate-800 rounded-full overflow-hidden">
+<div id="velocity-bar" class="h-full bg-primary shadow-[0_0_12px_rgba(43,141,238,0.5)] transition-all duration-300" style="width: 0%;"></div>
+</div>
+</div>
+</main>
+<footer class="p-8 flex justify-between items-end">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-600 font-bold">Current Font</span>
+<span class="text-xs text-slate-400">Space Grotesk Variable</span>
+</div>
+<div class="flex gap-6">
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-600 font-bold">Words</span>
+<span id="words-count" class="text-xs text-slate-400 tracking-tight">0</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] uppercase tracking-widest text-slate-600 font-bold">CPM</span>
+<span id="cpm-count" class="text-xs text-slate-400 tracking-tight">0</span>
+</div>
+</div>
+</div>
+</footer>
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full"></div>
+</div>
+</div>
 
-    <script>
-        const editor = document.getElementById('editor');
-        const display = document.getElementById('display');
-        let lastCharTime = 0;
-        let typingSpeed = 0; // chars per second
-        let pauseTimeout;
+<script>
+    const editor = document.getElementById('editor');
+    const display = document.getElementById('display');
+    const velocityBar = document.getElementById('velocity-bar');
+    const fluidityText = document.getElementById('fluidity-text');
+    const wordsCount = document.getElementById('words-count');
+    const cpmCount = document.getElementById('cpm-count');
 
-        editor.addEventListener('input', handleInput);
-        editor.addEventListener('keydown', () => {
-            const now = performance.now();
-            if (lastCharTime > 0) {
-                const timeDiff = now - lastCharTime;
-                typingSpeed = 1000 / timeDiff; // Instantaneous speed
+    let lastCharTime = 0;
+    let typingSpeed = 0; // chars per second
+    let pauseTimeout;
+
+    // For CPM calculation
+    let startTime = 0;
+    let totalCharsTyped = 0;
+
+    editor.addEventListener('input', handleInput);
+    editor.addEventListener('keydown', (e) => {
+        // Ignore navigation keys
+        if (e.key.length > 1 && e.key !== 'Backspace' && e.key !== 'Enter') return;
+
+        const now = performance.now();
+        if (startTime === 0) startTime = now;
+
+        if (e.key.length === 1) {
+            totalCharsTyped++;
+        }
+
+        if (lastCharTime > 0) {
+            const timeDiff = now - lastCharTime;
+            typingSpeed = 1000 / timeDiff; // Instantaneous speed
+        }
+        lastCharTime = now;
+
+        clearTimeout(pauseTimeout);
+        pauseTimeout = setTimeout(() => {
+            typingSpeed = 0; // Reset speed after a pause
+            updateUI();
+        }, 500); // 500ms pause threshold
+    });
+
+    function handleInput() {
+        updateUI();
+    }
+
+    function updateUI() {
+        const text = editor.value;
+        display.innerHTML = ''; // Clear previous content
+
+        // Update Words Count
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+        wordsCount.textContent = words.length.toString().padStart(2, '0');
+
+        // Update CPM
+        if (startTime > 0 && text.length > 0) {
+            const elapsedMinutes = (performance.now() - startTime) / 60000;
+            const cpm = Math.round(totalCharsTyped / elapsedMinutes);
+            cpmCount.textContent = isNaN(cpm) || !isFinite(cpm) ? '0' : cpm.toString();
+        } else {
+            cpmCount.textContent = '0';
+        }
+
+        // Update Velocity Bar (max speed ~20 chars/sec)
+        let speedPercent = Math.min(100, Math.round((typingSpeed / 20) * 100));
+        velocityBar.style.width = speedPercent + '%';
+        fluidityText.textContent = speedPercent + '% Fluidity';
+
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = char;
+
+            // Style based on current typing speed
+            let fontWeight = 400;
+            let fontStyle = 'normal';
+            let fontFamily = "'Space Grotesk', sans-serif";
+            let color = '#f1f5f9'; // text-slate-100
+            let textShadow = 'none';
+            let transform = 'none';
+            let letterSpacing = 'normal';
+
+            if (typingSpeed > 15) { // Very Fast
+                fontWeight = 700;
+                color = '#2b8cee'; // primary
+                fontStyle = 'italic';
+                letterSpacing = '0.05em';
+                transform = `scale(1.05)`;
+                textShadow = '0 0 8px rgba(43,141,238,0.5)';
+            } else if (typingSpeed > 8) { // Fast
+                fontWeight = 600;
+                color = '#94a3b8'; // text-slate-400
+                letterSpacing = '0.02em';
+            } else if (typingSpeed > 3) { // Moderate
+                fontWeight = 400;
+                color = '#e2e8f0'; // text-slate-200
+            } else { // Slow or paused
+                fontWeight = 300;
+                color = '#cbd5e1'; // text-slate-300
             }
-            lastCharTime = now;
-            
-            clearTimeout(pauseTimeout);
-            pauseTimeout = setTimeout(() => {
-                typingSpeed = 0; // Reset speed after a pause
-                applyStyles();
-            }, 500); // 500ms pause threshold
-        });
 
-        function handleInput() {
-            applyStyles();
-        }
-
-        function applyStyles() {
-            const text = editor.value;
-            display.innerHTML = ''; // Clear previous content
-
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                const span = document.createElement('span');
-                span.className = 'char';
-                span.textContent = char;
-
-                // Style based on current typing speed
-                let fontWeight = 400;
-                let fontStyle = 'normal';
-                let fontFamily = "'Roboto Mono', monospace";
-                let color = '#eee';
-                let textShadow = 'none';
-                let transform = 'none';
-
-                if (typingSpeed > 20) { // Very Fast
-                    fontFamily = "'Orbitron', sans-serif";
-                    fontWeight = 900;
-                    color = '#00ffff';
-                    textShadow = '0 0 5px #00ffff, 0 0 10px #00ffff';
-                    transform = `scale(1.1)`;
-                } else if (typingSpeed > 10) { // Fast
-                    fontWeight = 700;
-                    color = '#f0f';
-                } else if (typingSpeed > 5) { // Moderate
-                    fontWeight = 400;
-                } else { // Slow or paused
-                    fontFamily = "'Lora', serif";
-                    fontStyle = 'italic';
-                    color = '#999';
-                    transform = `skewX(-10deg)`;
-                }
-                
-                if (char === ' ') {
-                    fontFamily = "'Roboto Mono', monospace";
-                    fontStyle = 'normal';
-                }
-
-                span.style.fontWeight = fontWeight;
-                span.style.fontStyle = fontStyle;
-                span.style.fontFamily = fontFamily;
-                span.style.color = color;
-                span.style.textShadow = textShadow;
-                span.style.transform = transform;
-
-                display.appendChild(span);
+            if (char === ' ') {
+                fontStyle = 'normal';
+                transform = 'none';
+                letterSpacing = 'normal';
             }
-             // Auto-scroll to the bottom
-            editor.scrollTop = editor.scrollHeight;
-            display.parentElement.scrollTop = display.parentElement.scrollHeight;
+
+            span.style.fontWeight = fontWeight;
+            span.style.fontStyle = fontStyle;
+            span.style.fontFamily = fontFamily;
+            span.style.color = color;
+            span.style.textShadow = textShadow;
+            span.style.transform = transform;
+            span.style.display = 'inline-block';
+            span.style.transition = 'all 0.2s ease-out';
+            span.style.letterSpacing = letterSpacing;
+
+            display.appendChild(span);
         }
 
-        // Initial placeholder message
-        function initialMessage() {
-            const placeholder = "Welcome to ChronoType.\n\nYour words shape themselves by the rhythm of your thoughts.\n\nType fast for a bold, futuristic feel.\nType slow and deliberate for an elegant, classic script.\nPauses create moments of digital decay.\n\nBegin typing to start your temporal story...";
-            editor.value = placeholder;
-            applyStyles();
-            editor.value = '';
-            editor.placeholder = 'Start typing...'
-        }
+        // Auto-scroll to the bottom
+        editor.scrollTop = editor.scrollHeight;
+        display.scrollTop = display.scrollHeight;
+    }
 
-        initialMessage();
-    </script>
-</body>
-</html>
+    // Initial placeholder message
+    function initialMessage() {
+        const placeholder = "Welcome to ChronoType.\n\nYour words shape themselves by the rhythm of your thoughts.\n\nType fast for a bold, fluid feel.\nType slow and deliberate for a clean, simple look.\n\nBegin typing to start your temporal story...";
+        editor.value = placeholder;
+        updateUI();
+        editor.value = '';
+        editor.placeholder = 'Start typing...';
+        startTime = 0;
+        totalCharsTyped = 0;
+        wordsCount.textContent = '0';
+        cpmCount.textContent = '0';
+        velocityBar.style.width = '0%';
+        fluidityText.textContent = '0% Fluidity';
+    }
+
+    // Focus editor on click anywhere in the container
+    document.querySelector('.max-w-4xl').addEventListener('click', () => {
+        editor.focus();
+    });
+
+    initialMessage();
+</script>
+
+</body></html>
