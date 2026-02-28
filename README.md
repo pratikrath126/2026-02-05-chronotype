@@ -1,6 +1,6 @@
 # ChronoType
 
-**Live Demo:** [Link will be generated upon deployment]
+**Live Demo:** [https://chronotype.onrender.com](https://chronotype.onrender.com)
 
 ## 🚀 About
 
