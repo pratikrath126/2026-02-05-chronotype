@@ -133,15 +133,15 @@
         clearTimeout(pauseTimeout);
         pauseTimeout = setTimeout(() => {
             typingSpeed = 0; // Reset speed after a pause
-            updateUI();
+            applyStyles();
         }, 500); // 500ms pause threshold
     });
 
     function handleInput() {
-        updateUI();
+        applyStyles();
     }
 
-    function updateUI() {
+    function applyStyles() {
         const text = editor.value;
         display.innerHTML = ''; // Clear previous content
 
@@ -225,7 +225,7 @@
     function initialMessage() {
         const placeholder = "Welcome to ChronoType.\n\nYour words shape themselves by the rhythm of your thoughts.\n\nType fast for a bold, fluid feel.\nType slow and deliberate for a clean, simple look.\n\nBegin typing to start your temporal story...";
         editor.value = placeholder;
-        updateUI();
+        applyStyles();
         editor.value = '';
         editor.placeholder = 'Start typing...';
         startTime = 0;
