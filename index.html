@@ -163,6 +163,8 @@
         velocityBar.style.width = speedPercent + '%';
         fluidityText.textContent = speedPercent + '% Fluidity';
 
+        const fragment = document.createDocumentFragment();
+
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
             const span = document.createElement('span');
@@ -213,8 +215,9 @@
             span.style.transition = 'all 0.2s ease-out';
             span.style.letterSpacing = letterSpacing;
 
-            display.appendChild(span);
+            fragment.appendChild(span);
         }
+        display.appendChild(fragment);
 
         // Auto-scroll to the bottom
         editor.scrollTop = editor.scrollHeight;
