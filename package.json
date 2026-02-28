@@ -1,0 +1,11 @@
+{
+  "name": "chronotype-tests",
+  "version": "1.0.0",
+  "description": "Tests for chronotype",
+  "scripts": {
+    "test": "node test_applyStyles.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  }
+}
