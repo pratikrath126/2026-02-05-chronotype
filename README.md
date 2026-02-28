@@ -1,6 +1,6 @@
 # ChronoType
 
-**Live Demo:** [https://chronotype.onrender.com](https://chronotype.onrender.com)
+**Live Demo:** [https://scholar-nexus-app.onrender.com](https://scholar-nexus-app.onrender.com)
 
 ## 🚀 About
 
