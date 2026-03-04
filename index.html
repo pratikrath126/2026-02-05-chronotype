@@ -161,7 +161,7 @@
         // Update Velocity Bar (max speed ~20 chars/sec)
         let speedPercent = Math.min(100, Math.round((typingSpeed / 20) * 100));
         velocityBar.style.width = speedPercent + '%';
-        fluidityText.textContent = speedPercent + '% Fluidity';
+        fluidityText.textContent = speedPercent + '% Fluidity';         const fragment = document.createDocumentFragment();
 
         for (const char of text) {
             const span = document.createElement('span');
@@ -212,10 +212,10 @@
             span.style.transition = 'all 0.2s ease-out';
             span.style.letterSpacing = letterSpacing;
 
-            display.appendChild(span);
+            fragment.appendChild(span);
         }
 
-        // Auto-scroll to the bottom
+        // display.appendChild(fragment);          // Auto-scroll to the bottom
         editor.scrollTop = editor.scrollHeight;
         display.scrollTop = display.scrollHeight;
     }
