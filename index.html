@@ -146,8 +146,10 @@
         display.innerHTML = ''; // Clear previous content
 
         // Update Words Count
-        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
-        wordsCount.textContent = words.length.toString().padStart(2, '0');
+        let count = 0;
+        const re = /\S+/g;
+        while (re.test(text)) count++;
+        wordsCount.textContent = count.toString().padStart(2, '0');
 
         // Update CPM
         if (startTime > 0 && text.length > 0) {
