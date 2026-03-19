@@ -146,9 +146,7 @@
         display.innerHTML = ''; // Clear previous content
 
         // Update Words Count
-        let count = 0;
-        const re = /\S+/g;
-        while (re.test(text)) count++;
+        const count = (text.match(/\S+/g) || []).length;
         wordsCount.textContent = count.toString().padStart(2, '0');
 
         // Update CPM
